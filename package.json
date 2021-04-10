@@ -1,0 +1,27 @@
+{
+  "name": "discordbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js debug",
+    "start": "index.js"
+  },
+  "author": "ImN0tToxic",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "1.2.1",
+    "cron": "^1.8.2",
+    "discord.js": "^12.5.1",
+    "discord.js-commando": "^0.12.2",
+    "hypixel-api": "^1.2.0",
+    "instagram-private-api": "^1.44.0",
+    "jquery": "^3.5.1",
+    "mojang-api": "0.0.2",
+    "mysql": "^2.18.1",
+    "node-fetch": "^2.6.1",
+    "parse-json": "^5.2.0",
+    "pm2": "^4.5.4",
+    "ytdl-core": "^3.4.2"
+  }
+}
