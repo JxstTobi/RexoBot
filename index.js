@@ -6,6 +6,7 @@ const fetch = require("node-fetch");
 const mysql = require('mysql');
 var CronJob = require('cron').CronJob;
 const { RichEmbed, Channel, MessageEmbed } = require('discord.js');
+const { stringify } = require('querystring');
 const connection = mysql.createConnection({
   host     : '135.125.215.61',
   port     : '3306',
@@ -1511,7 +1512,7 @@ function lastonline(msg, args) {
                                 console.log(json.length)
                                     if(json.length === 0) {
                                 embed_i.addField(getGuildMemberRank(player.uuid) + ': `'+player.displayname +'`', 'Offline: ' + Math.round(time_difference) + ' Tage \nUrlaub: Nicht abgemeldet.')
-                                msge.edit(embed_i2) 
+                                msge.edit(embed_i) 
                                 } else {                            
                                     var string = JSON.stringify(result);
                                     var json =  JSON.parse(string);
@@ -1775,12 +1776,323 @@ function getSlayerLevelByXp(xp, type) {
         }
 }
 async function guildinfo(msg, args) {
-    //db-name: gstatsUses
-    //4,32e+7
+    var embed_i = new MessageEmbed();
     var date = new Date();
-    connection.query("SELECT Date FROM gstatsUses;", function (err, result, fields) {
-        if(result.Date != undefined) {
-            console.log("true")
+    connection.query("SELECT * FROM gstatsUses;", function (err, result, fields) {                 
+    function task(i, guild) { 
+        setTimeout(function() { 
+         fetch("https://api.hypixel.net/skyblock/profiles?key=47cb944b-4834-42e6-ab0f-d09914558bac&uuid=" + guild.members[i].uuid)
+         .then(result1 => result1.json())
+         .then(({ profiles }) => {
+             console.log(i)
+             console.log(guild.members[i].uuid)
+             var parray = []
+             if(profiles != null) {
+         for(var p = 0; p < profiles.length; p++) {
+             var last_save = profiles[p].members[guild.members[i].uuid].last_save
+             parray.push(last_save)
+             parray.sort();
+         }
+     }
+            function getFarming(last_save) {
+             var profilesobject = profiles;
+             for (var key of Object.keys(profilesobject)) {
+                 if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                     return profilesobject[key].members[guild.members[i].uuid].experience_skill_farming
+                 }
+             }    
+             console.log('Dieses Profil existiert nicht.');
+             return;
+             }
+             function getMining(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         return profilesobject[key].members[guild.members[i].uuid].experience_skill_mining
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }
+             function getCombat(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         return profilesobject[key].members[guild.members[i].uuid].experience_skill_combat
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }
+             function getForaging(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         return profilesobject[key].members[guild.members[i].uuid].experience_skill_foraging
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }
+             function getFishing(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         return profilesobject[key].members[guild.members[i].uuid].experience_skill_fishing
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }
+             function getEnchanting(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         return profilesobject[key].members[guild.members[i].uuid].experience_skill_enchanting
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }        
+             function getAlchemy(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         return profilesobject[key].members[guild.members[i].uuid].experience_skill_alchemy
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }
+             function getTaming(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         return profilesobject[key].members[guild.members[i].uuid].experience_skill_taming
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }
+             function getZombie(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         if(profilesobject[key].members[guild.members[i].uuid].slayer_bosses != null) {
+                         return profilesobject[key].members[guild.members[i].uuid].slayer_bosses.zombie.xp
+                         }
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }
+             function getTara(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         return profilesobject[key].members[guild.members[i].uuid].slayer_bosses.spider.xp
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }
+             function getWolf(last_save) {
+                 var profilesobject = profiles;
+                 for (var key of Object.keys(profilesobject)) {
+                     if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
+                         return profilesobject[key].members[guild.members[i].uuid].slayer_bosses.wolf.xp
+                     }
+                 }       
+                 console.log('Dieses Profil existiert nicht.');
+                 return;
+             }
+             
+             if(getFarming(parray[parray.length-1]) != undefined) {
+                 total_farming_exp = total_farming_exp + getFarming(parray[parray.length-1])
+             }
+             if(getMining(parray[parray.length-1]) != undefined) {
+                 total_mining_exp = total_mining_exp + getMining(parray[parray.length-1])
+             }  
+             if(getCombat(parray[parray.length-1]) != undefined) {
+                 total_combat_exp = total_combat_exp + getCombat(parray[parray.length-1])
+             }
+             if(getForaging(parray[parray.length-1]) != undefined) {
+                 total_foraging_exp = total_foraging_exp + getForaging(parray[parray.length-1])
+             }
+             if(getFishing(parray[parray.length-1]) != undefined) {
+                 total_fishing_exp = total_fishing_exp + getFishing(parray[parray.length-1])
+             }
+             if(getEnchanting(parray[parray.length-1]) != undefined) {
+                 total_enchanting_exp = total_enchanting_exp + getEnchanting(parray[parray.length-1])
+             }
+             if(getAlchemy(parray[parray.length-1]) != undefined) {
+                 total_alchemy_exp = total_alchemy_exp + getAlchemy(parray[parray.length-1])
+             }
+             if(getTaming(parray[parray.length-1]) != undefined) {
+                 total_taming_exp = total_taming_exp + getTaming(parray[parray.length-1])
+             }        
+             if(getZombie(parray[parray.length-1]) != undefined 
+             && getTara(parray[parray.length-1]) != undefined 
+             && getWolf(parray[parray.length-1]) != undefined) {
+                 total_slayer_exp = total_slayer_exp + getWolf(parray[parray.length-1]) + getTara(parray[parray.length-1]) + getZombie(parray[parray.length-1])
+             }
+             if(i === guild.members.length-1) {
+                 connection.query(`UPDATE gstatsUses(Date, Members, FarmingExp, MiningExp, CombatExp, ForagingExp, FishingExp, EnchantingExp, AlchemyExp, TamingExp, SlayerExp) VALUES(${date.getTime()}, ${guild.members.length}, ${total_farming_exp}, ${total_mining_exp}, ${total_combat_exp}, ${total_foraging_exp}, ${total_fishing_exp}, ${total_enchanting_exp}, ${total_alchemy_exp}, ${total_taming_exp}, ${total_slayer_exp})`)
+                 embed_i.addFields(
+                 { name: 'Farming', value: 'Total Exp: ' + (total_farming_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_farming_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_farming_exp/guild.members.length).level, inline: true},
+                 { name: 'Mining', value: 'Total Exp: ' + (total_mining_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_mining_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_mining_exp/guild.members.length).level, inline: true},
+                 { name: 'Combat', value: 'Total Exp: ' + (total_combat_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_combat_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_combat_exp/guild.members.length).level, inline: true},
+                 { name: 'Foraging', value: 'Total Exp: ' + (total_foraging_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_foraging_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_foraging_exp/guild.members.length).level, inline: true},
+                 { name: 'Fishing', value: 'Total Exp: ' + (total_fishing_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_fishing_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_fishing_exp/guild.members.length).level, inline: true},
+                 { name: 'Enchanting', value: 'Total Exp: ' + (total_enchanting_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_enchanting_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_enchanting_exp/guild.members.length).level, inline: true},
+                 { name: 'Alchemy', value: 'Total Exp: ' +  (total_alchemy_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_alchemy_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_alchemy_exp/guild.members.length).level, inline: true},
+                 { name: 'Taming', value: 'Total Exp: ' +  (total_taming_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_taming_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_taming_exp/guild.members.length).level, inline: true},
+                 { name: 'Slayer', value: 'Total Exp: ' +  (total_slayer_exp/1000000).toFixed(1) + "m\nAverage Exp: " + Math.round(total_slayer_exp/3/guild.members.length) + "\nAverage Level: " + getSlayerLevelByXp(total_slayer_exp/3/guild.members.length), inline: true},
+                 { name: 'All Skills', value: 
+                 'Total Exp: ' 
+                     + ((total_farming_exp 
+                     + total_mining_exp 
+                     + total_combat_exp 
+                     + total_foraging_exp 
+                     + total_fishing_exp 
+                     + total_enchanting_exp 
+                     + total_taming_exp
+                     + total_alchemy_exp)/1000000).toFixed(1) + 
+                 "m\nAverage Exp per Skill: " 
+                     + ((
+                         ((total_farming_exp 
+                         + total_mining_exp 
+                         + total_combat_exp 
+                         + total_foraging_exp 
+                         + total_fishing_exp 
+                         + total_enchanting_exp 
+                         + total_alchemy_exp
+                         + total_taming_exp)
+                         /8)
+                         /guild.members.length)/1000000).toFixed(1) +
+                 "m\nAverage Level: " + 
+                 getLevelByXp(((total_farming_exp 
+                     + total_mining_exp 
+                     + total_combat_exp 
+                     + total_foraging_exp 
+                     + total_fishing_exp 
+                     + total_enchanting_exp 
+                     + total_alchemy_exp
+                     + total_taming_exp)
+                     /8)
+                     /guild.members.length).level
+                     , inline: true}
+                 )
+             msge.edit(embed_i)
+             }
+         })   
+        }, 1000 * i); 
+      }
+        var string = JSON.stringify(result);
+        var json =  JSON.parse(string);
+        console.log("0")
+        for(var i = 0; i<json.length; i++) {
+        if(result[0].Date != undefined) {
+            if((date.getTime()-result[0].Date)>4320000000) {
+                if(msg.member.roles.cache.some(role => role.name === 'Team (Ping)')) { 
+                    var total_farming_exp = 0;
+                    var total_mining_exp = 0;
+                    var total_combat_exp = 0;
+                    var total_foraging_exp = 0;
+                    var total_fishing_exp = 0;
+                    var total_enchanting_exp = 0;
+                    var total_alchemy_exp = 0;
+                    var total_taming_exp = 0;
+                    var total_slayer_exp = 0;
+                    var today = new Date();
+                    var today1 = new Date();
+                    var today2 = new Date();
+                    var dd2 = String(today2.getDate()).padStart(2, '0');
+                    var mm2 = String(today2.getMonth() + 1).padStart(2, '0');
+                    var yyyy2 = today2.getFullYear();
+                    embed_i.setTitle('Guildstats-Tracker')
+                    embed_i.setThumbnail('https://i.imgur.com/rD1j3vJ.jpeg')
+                    today2 = dd2 + '/' + mm2 + '/' + yyyy2;
+                    today1 = dd2-7 + '/' + mm2 + '/' + yyyy2;
+                    today = dd2-1 + '/' + mm2 + '/' + yyyy2; 
+                    msg.channel.send(embed_i).then(msge => {
+                    fetch("https://api.hypixel.net/guild?key=47cb944b-4834-42e6-ab0f-d09914558bac&player=64e008cbc99b4397ae670d4624acf9d7")
+                    .then(result => result.json())
+                    .then(({ guild }) => {     
+                        for(var i = 0; i<guild.members.length; i++) {
+                            task(i, guild)
+                        }
+                        embed_i.addField("Heute", 'Member: ' + guild.members.length)
+                        msge.edit(embed_i)
+                    })
+                    msge.edit(embed_i)
+                })
+                    } else {
+                        msg.channel.send('Dazu hast du keine Rechte')
+                    }
+            } else {
+                if(msg.member.roles.cache.some(role => role.name === 'Team (Ping)')) { 
+                    msg.channel.send("Loading Data...").then(msge => {
+                    fetch("https://api.hypixel.net/guild?key=47cb944b-4834-42e6-ab0f-d09914558bac&player=64e008cbc99b4397ae670d4624acf9d7")
+                    .then(result => result.json())
+                    .then(({ guild }) => {  
+                        embed_i.setTitle('Guildstats-Tracker')
+                        embed_i.setThumbnail('https://i.imgur.com/rD1j3vJ.jpeg')
+                        embed_i.addField("Information", "Die Gilden Statistiken werden maximal alle 12h geupdated")
+                        embed_i.setFooter("Gilden_Statistiken")
+                        embed_i.addField("Heute", 'Member: ' + guild.members.length)
+                    embed_i.addFields(
+                        { name: 'Farming', value: 'Total Exp: ' + (json[0].FarmingExp/1000000).toFixed(1) + "m\nAverage Exp: " + ((json[0].FarmingExp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(json[0].FarmingExp/guild.members.length).level, inline: true},
+                        { name: 'Mining', value: 'Total Exp: ' + (json[0].MiningExp/1000000).toFixed(1) + "m\nAverage Exp: " + ((json[0].MiningExp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(json[0].MiningExp/guild.members.length).level, inline: true},
+                        { name: 'Combat', value: 'Total Exp: ' + (json[0].CombatExp/1000000).toFixed(1) + "m\nAverage Exp: " + ((json[0].CombatExp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(json[0].CombatExp/guild.members.length).level, inline: true},
+                        { name: 'Foraging', value: 'Total Exp: ' + (json[0].ForagingExp/1000000).toFixed(1) + "m\nAverage Exp: " + ((json[0].ForagingExp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(json[0].ForagingExp/guild.members.length).level, inline: true},
+                        { name: 'Fishing', value: 'Total Exp: ' + (json[0].FishingExp/1000000).toFixed(1) + "m\nAverage Exp: " + ((json[0].FishingExp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(json[0].FishingExp/guild.members.length).level, inline: true},
+                        { name: 'Enchanting', value: 'Total Exp: ' + (json[0].EnchantingExp/1000000).toFixed(1) + "m\nAverage Exp: " + ((json[0].EnchantingExp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(json[0].EnchantingExp/guild.members.length).level, inline: true},
+                        { name: 'Alchemy', value: 'Total Exp: ' +  (json[0].AlchemyExp/1000000).toFixed(1) + "m\nAverage Exp: " + ((json[0].AlchemyExp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(json[0].AlchemyExp/guild.members.length).level, inline: true},
+                        { name: 'Taming', value: 'Total Exp: ' +  (json[0].TamingExp/1000000).toFixed(1) + "m\nAverage Exp: " + ((json[0].TamingExp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(json[0].TamingExp/guild.members.length).level, inline: true},
+                        { name: 'Slayer', value: 'Total Exp: ' +  (json[0].SlayerExp/1000000).toFixed(1) + "m\nAverage Exp: " + Math.round(json[0].SlayerExp/3/guild.members.length) + "\nAverage Level: " + getSlayerLevelByXp(json[0].SlayerExp/3/guild.members.length), inline: true},
+                        { name: 'All Skills', value: 
+                        'Total Exp: ' 
+                            + ((json[0].FarmingExp
+                            + json[0].MiningExp
+                            + json[0].CombatExp
+                            + json[0].ForagingExp
+                            + json[0].FishingExp
+                            + json[0].EnchantingExp
+                            + json[0].AlchemyExp
+                            + json[0].TamingExp)/1000000).toFixed(1) + 
+                        "m\nAverage Exp per Skill: " 
+                            + ((
+                                ((json[0].FarmingExp
+                                    + json[0].MiningExp
+                                    + json[0].CombatExp
+                                    + json[0].ForagingExp
+                                    + json[0].FishingExp
+                                    + json[0].EnchantingExp
+                                    + json[0].AlchemyExp
+                                    + json[0].TamingExp)
+                                /8)
+                                /guild.members.length)/1000000).toFixed(1) +
+                        "m\nAverage Level: " + 
+                        getLevelByXp(((json[0].FarmingExp
+                            + json[0].MiningExp
+                            + json[0].CombatExp
+                            + json[0].ForagingExp
+                            + json[0].FishingExp
+                            + json[0].EnchantingExp
+                            + json[0].AlchemyExp
+                            + json[0].TamingExp)
+                            /8)
+                            /guild.members.length).level
+                            , inline: true}
+                        )
+                        msge.edit(embed_i)
+                        })
+                        })
+                } else {
+                    msg.channel.send('Dazu hast du keine Rechte')
+                }
+            }
         } else {
             if(msg.member.roles.cache.some(role => role.name === 'Team (Ping)')) { 
                 var total_farming_exp = 0;
@@ -1792,7 +2104,6 @@ async function guildinfo(msg, args) {
                 var total_alchemy_exp = 0;
                 var total_taming_exp = 0;
                 var total_slayer_exp = 0;
-                var embed_i = new MessageEmbed();
                 var today = new Date();
                 var today1 = new Date();
                 var today2 = new Date();
@@ -1804,239 +2115,16 @@ async function guildinfo(msg, args) {
                 today2 = dd2 + '/' + mm2 + '/' + yyyy2;
                 today1 = dd2-7 + '/' + mm2 + '/' + yyyy2;
                 today = dd2-1 + '/' + mm2 + '/' + yyyy2; 
-                msg.channel.send(embed_i).then(msge => {
+                embed_i.addField("Information", "Die Gilden Statistiken werden maximal alle 12h geupdated")
+                embed_i.setFooter("Gilden_Statistiken")
+                msg.channel.send("Loading Data...").then(msge => {
                 fetch("https://api.hypixel.net/guild?key=47cb944b-4834-42e6-ab0f-d09914558bac&player=64e008cbc99b4397ae670d4624acf9d7")
                 .then(result => result.json())
-                .then(({ guild }) => {    
-             function task(i) { 
-               setTimeout(function() { 
-                fetch("https://api.hypixel.net/skyblock/profiles?key=47cb944b-4834-42e6-ab0f-d09914558bac&uuid=" + guild.members[i].uuid)
-                .then(result1 => result1.json())
-                .then(({ profiles }) => {
-                    console.log(i)
-                    console.log(guild.members[i].uuid)
-                    var parray = []
-                    if(profiles != null) {
-                for(var p = 0; p < profiles.length; p++) {
-                    var last_save = profiles[p].members[guild.members[i].uuid].last_save
-                    parray.push(last_save)
-                    parray.sort();
-                }
-            }
-                   function getFarming(last_save) {
-                    var profilesobject = profiles;
-                    for (var key of Object.keys(profilesobject)) {
-                        if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                            return profilesobject[key].members[guild.members[i].uuid].experience_skill_farming
-                        }
-                    }    
-                    console.log('Dieses Profil existiert nicht.');
-                    return;
-                    }
-                    function getMining(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                return profilesobject[key].members[guild.members[i].uuid].experience_skill_mining
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }
-                    function getCombat(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                return profilesobject[key].members[guild.members[i].uuid].experience_skill_combat
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }
-                    function getForaging(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                return profilesobject[key].members[guild.members[i].uuid].experience_skill_foraging
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }
-                    function getFishing(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                return profilesobject[key].members[guild.members[i].uuid].experience_skill_fishing
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }
-                    function getEnchanting(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                return profilesobject[key].members[guild.members[i].uuid].experience_skill_enchanting
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }        
-                    function getAlchemy(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                return profilesobject[key].members[guild.members[i].uuid].experience_skill_alchemy
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }
-                    function getTaming(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                return profilesobject[key].members[guild.members[i].uuid].experience_skill_taming
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }
-                    function getZombie(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                if(profilesobject[key].members[guild.members[i].uuid].slayer_bosses != null) {
-                                return profilesobject[key].members[guild.members[i].uuid].slayer_bosses.zombie.xp
-                                }
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }
-                    function getTara(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                return profilesobject[key].members[guild.members[i].uuid].slayer_bosses.spider.xp
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }
-                    function getWolf(last_save) {
-                        var profilesobject = profiles;
-                        for (var key of Object.keys(profilesobject)) {
-                            if (profilesobject[key].members[guild.members[i].uuid].last_save === last_save) {
-                                return profilesobject[key].members[guild.members[i].uuid].slayer_bosses.wolf.xp
-                            }
-                        }       
-                        console.log('Dieses Profil existiert nicht.');
-                        return;
-                    }
-                    
-                    if(getFarming(parray[parray.length-1]) != undefined) {
-                        total_farming_exp = total_farming_exp + getFarming(parray[parray.length-1])
-                    }
-                    if(getMining(parray[parray.length-1]) != undefined) {
-                        total_mining_exp = total_mining_exp + getMining(parray[parray.length-1])
-                    }  
-                    if(getCombat(parray[parray.length-1]) != undefined) {
-                        total_combat_exp = total_combat_exp + getCombat(parray[parray.length-1])
-                    }
-                    if(getForaging(parray[parray.length-1]) != undefined) {
-                        total_foraging_exp = total_foraging_exp + getForaging(parray[parray.length-1])
-                    }
-                    if(getFishing(parray[parray.length-1]) != undefined) {
-                        total_fishing_exp = total_fishing_exp + getFishing(parray[parray.length-1])
-                    }
-                    if(getEnchanting(parray[parray.length-1]) != undefined) {
-                        total_enchanting_exp = total_enchanting_exp + getEnchanting(parray[parray.length-1])
-                    }
-                    if(getAlchemy(parray[parray.length-1]) != undefined) {
-                        total_alchemy_exp = total_alchemy_exp + getAlchemy(parray[parray.length-1])
-                    }
-                    if(getTaming(parray[parray.length-1]) != undefined) {
-                        total_taming_exp = total_taming_exp + getTaming(parray[parray.length-1])
-                    }        
-                    if(getZombie(parray[parray.length-1]) != undefined 
-                    && getTara(parray[parray.length-1]) != undefined 
-                    && getWolf(parray[parray.length-1]) != undefined) {
-                        total_slayer_exp = total_slayer_exp + getWolf(parray[parray.length-1]) + getTara(parray[parray.length-1]) + getZombie(parray[parray.length-1])
-                    }
-                    if(i === guild.members.length-1) {
-                        connection.query(`INSERT INTO gstatsUses(Date, Members, FarmingExp, MiningExp, CombatExp, ForagingExp, FishingExp, EnchantingExp, AlchemyExp, TamingExp, SlayerExp) VALUES(${date.getTime()}, ${guild.members.length}, ${total_farming_exp}, ${total_mining_exp}, ${total_combat_exp}, ${total_foraging_exp}, ${total_fishing_exp}, ${total_enchanting_exp}, ${total_alchemy_exp}, ${total_taming_exp}, ${total_slayer_exp})`)
-                        embed_i.addFields(
-                        { name: 'Farming', value: 'Total Exp: ' + (total_farming_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_farming_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_farming_exp/guild.members.length).level, inline: true},
-                        { name: 'Mining', value: 'Total Exp: ' + (total_mining_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_mining_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_mining_exp/guild.members.length).level, inline: true},
-                        { name: 'Combat', value: 'Total Exp: ' + (total_combat_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_combat_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_combat_exp/guild.members.length).level, inline: true},
-                        { name: 'Foraging', value: 'Total Exp: ' + (total_foraging_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_foraging_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_foraging_exp/guild.members.length).level, inline: true},
-                        { name: 'Fishing', value: 'Total Exp: ' + (total_fishing_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_fishing_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_fishing_exp/guild.members.length).level, inline: true},
-                        { name: 'Enchanting', value: 'Total Exp: ' + (total_enchanting_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_enchanting_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_enchanting_exp/guild.members.length).level, inline: true},
-                        { name: 'Alchemy', value: 'Total Exp: ' +  (total_alchemy_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_alchemy_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_alchemy_exp/guild.members.length).level, inline: true},
-                        { name: 'Taming', value: 'Total Exp: ' +  (total_taming_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_taming_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_taming_exp/guild.members.length).level, inline: true},
-                        { name: 'Slayer', value: 'Total Exp: ' +  (total_slayer_exp/1000000).toFixed(1) + "m\nAverage Exp: " + Math.round(total_slayer_exp/3/guild.members.length) + "\nAverage Level: " + getSlayerLevelByXp(total_slayer_exp/3/guild.members.length), inline: true},
-                        { name: 'All Skills', value: 
-                        'Total Exp: ' 
-                            + ((total_farming_exp 
-                            + total_mining_exp 
-                            + total_combat_exp 
-                            + total_foraging_exp 
-                            + total_fishing_exp 
-                            + total_enchanting_exp 
-                            + total_taming_exp
-                            + total_alchemy_exp)/1000000).toFixed(1) + 
-                        "m\nAverage Exp per Skill: " 
-                            + ((
-                                ((total_farming_exp 
-                                + total_mining_exp 
-                                + total_combat_exp 
-                                + total_foraging_exp 
-                                + total_fishing_exp 
-                                + total_enchanting_exp 
-                                + total_alchemy_exp
-                                + total_taming_exp)
-                                /8)
-                                /guild.members.length)/1000000).toFixed(1) +
-                        "m\nAverage Level: " + 
-                        getLevelByXp(((total_farming_exp 
-                            + total_mining_exp 
-                            + total_combat_exp 
-                            + total_foraging_exp 
-                            + total_fishing_exp 
-                            + total_enchanting_exp 
-                            + total_alchemy_exp
-                            + total_taming_exp)
-                            /8)
-                            /guild.members.length).level
-                            , inline: true}
-                        )
-                    msge.edit(embed_i)
-                    }
-                })   
-               }, 1000 * i); 
-             } 
+                .then(({ guild }) => {     
                     for(var i = 0; i<guild.members.length; i++) {
-                        task(i)
+                        task(i, guild)
                     }
-                    embed_i.addField(today2, 'Member: ' + guild.members.length)
-                    msge.edit(embed_i)
-                    connection.query("SELECT * FROM guildstats;", function (err, result, fields) {
-                        var string = JSON.stringify(result);
-                        var json =  JSON.parse(string);
-                        for(var int = 0; int < json.length; int++) {
-                            msge.edit(embed_i)
-                        if(json[int].Date === today) {
-                            embed_i.addField(today, 'Member: ' + json[int].Members)
-                            msge.edit(embed_i)
-                        }
-                        if(json[int].Date === today1) {
-                            embed_i.addField(today1, 'Member: ' + json[int].Members)
-                            msge.edit(embed_i)
-                        }
-                        }
-                       })
+                    embed_i.addField("Heute", 'Member: ' + guild.members.length)
                 })
                 msge.edit(embed_i)
             })
@@ -2044,6 +2132,7 @@ async function guildinfo(msg, args) {
                     msg.channel.send('Dazu hast du keine Rechte')
                 }
         }
+    }
     })
 }
 client.on('message', (msg) => { 
