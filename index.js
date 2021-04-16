@@ -16,6 +16,7 @@ const connection = mysql.createConnection({
   charset : 'utf8mb4'
 });
 const constants = {
+  //by sky.shiiyu.moe
     // XP required for each level of a skill
     leveling_xp: {
         1: 50,
