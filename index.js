@@ -8,11 +8,11 @@ var CronJob = require('cron').CronJob;
 const { RichEmbed, Channel, MessageEmbed } = require('discord.js');
 const { stringify } = require('querystring');
 const connection = mysql.createConnection({
-  host     : '135.125.215.61',
+  host     : config.host,
   port     : '3306',
-  user     : 'root',
-  password : '43AbYUwNAH9aZtQcFVuxh67433LcTmRV9JnWbsSQjzE33GaTGR5AkFvN7jUqX7G6*',
-  database : 'urlaub',
+  user     : config.user,
+  password : config.password,
+  database : config.database,
   charset : 'utf8mb4'
 });
 const constants = {
@@ -121,6 +121,7 @@ function cataLoop(msg, args) {
     connection.query(`SELECT * FROM verified WHERE discordid = ` + msg.member.id, function (err, result, fields) {
     var string = JSON.stringify(result);
     var json =  JSON.parse(string);
+    var errorEmbed = new MessageEmbed();
     if(json.length != 0) {
     for(var i = 0; i < result.length; i++) {
         var user = msg.member
@@ -132,6 +133,7 @@ function cataLoop(msg, args) {
             fetch("https://api.hypixel.net/skyblock/profiles?key=" + config.api_key + "&uuid=" + player.uuid)
             .then(result1 => result1.json())
             .then(({ profiles }) => {
+                if(profiles != undefined) {
                 var parray = []
                 for(var p = 0; p < profiles.length; p++) {
                 var last_save = profiles[p].members[player.uuid].last_save
@@ -152,27 +154,78 @@ function cataLoop(msg, args) {
                var cataExp = getCataExp(parray[parray.length - 1]);
             if(cataExp >= 625 && cataExp < 4385)            {
                 user.roles.add(msg.guild.roles.cache.find(role => role.name === 'Catacombs 5'));
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 10')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 15')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 20')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 25')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 30')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 35')); } catch {}
                 msg.channel.send('Du hast die Catacombs 5 Rolle erhalten.')
             } else if(cataExp >= 4385 && cataExp < 25340)     {
                 user.roles.add(msg.guild.roles.cache.find(role => role.name === 'Catacombs 10'));
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 5')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 15')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 20')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 25')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 30')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 35')); } catch {}
                 msg.channel.send('Du hast die Catacombs 10 Rolle erhalten.')
             } else if(cataExp >= 25340 && cataExp < 135640)     {
                 user.roles.add(msg.guild.roles.cache.find(role => role.name === 'Catacombs 15'));
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 55')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 10')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 20')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 25')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 30')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 35')); } catch {}
                 msg.channel.send('Du hast die Catacombs 15 Rolle erhalten.')
             } else if(cataExp >= 135640 && cataExp < 668640)     {
                 user.roles.add(msg.guild.roles.cache.find(role => role.name === 'Catacombs 20'));
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 55')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 15')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 10')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 25')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 30')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 35')); } catch {}
                 msg.channel.send('Du hast die Catacombs 20 Rolle erhalten.')
             } else if(cataExp >= 668640 && cataExp < 3084640)     {
                 user.roles.add(msg.guild.roles.cache.find(role => role.name === 'Catacombs 25'));
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 5')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 10')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 15')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 20')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 30')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 35')); } catch {}
                 msg.channel.send('Du hast die Catacombs 25 Rolle erhalten.')
             } else if(cataExp >= 3084640 && cataExp < 13259640)     {
                 user.roles.add(msg.guild.roles.cache.find(role => role.name === 'Catacombs 30'));
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 5')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 15')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 20')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 25')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 10')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 35')); } catch {}
                 msg.channel.send('Du hast die Catacombs 30 Rolle erhalten.')
             } else if(cataExp >= 13259640)     {
                 user.roles.add(msg.guild.roles.cache.find(role => role.name === 'Catacombs 35'));
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 5')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 15')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 20')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 25')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 10')); } catch {}
+                try { user.roles.remove(msg.guild.roles.cache.find(role => role.name === 'Catacombs 30')); } catch {}
                 msg.channel.send('Du hast die Catacombs 35 Rolle erhalten.')
             } 
+        } else {
+            errorEmbed.addField('Error', 'Keine SkyBlock-Profile gefunden.');
+            errorEmbed.addField('Information', 'Falls der Spieler Profile hat und diese trotzdem nicht gefunden wurde, dann versuche diesen Befehl in 2-3 Minuten erneut auszuführen.\n\n Falls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe. \nBugs des Bots bitte bei den Developern des Servers melden.')
+            msg.channel.send(errorEmbed);
+        }
             })
+        } else {
+            errorEmbed.addField('Error', 'Spieler nicht gefunden.');
+            errorEmbed.addField('Information', 'Falls der Spieler existiert und trotzdem nicht gefunden wurde, dann versuche diesen Befehl in 2-3 Minuten erneut auszuführen.\n\n Falls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe. \nBugs des Bots bitte bei den Developern des Servers melden.')
+            msg.channel.send(errorEmbed);
         }
         })
     }
@@ -285,7 +338,6 @@ function getProfileID(cutename, profiles) {
             return profilesobject[key].profile_id;
         }
     }
-    chan.send('Dieses Profil existiert nicht.');
     return;
 }
 var cmdmap = {
@@ -302,8 +354,7 @@ var cmdmap = {
     cata: cataLoop,
     kicktage: check_kickdays,
     gstats: guildinfo,
-    gscammers: gscammer_cmd,
-    bans: getBans
+    gscammers: gscammer_cmd
 }
 function player_cmd(msg, args) {
     var channel = msg.channel,
@@ -348,6 +399,7 @@ function player_cmd(msg, args) {
     });
     } else {
         errorEmbed.addField('Error', 'Spieler nicht gefunden.');
+        errorEmbed.addField('Information', 'Falls der Spieler existiert und trotzdem nicht gefunden wurde, dann versuche diesen Befehl in 2-3 Minuten erneut auszuführen.\n\n Falls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe. \nBugs des Bots bitte bei den Developern des Servers melden.')
         channel.send(errorEmbed);
     }
     });  
@@ -371,6 +423,7 @@ function stamm_cmd(msg, args) {
         .then(({ player }) => {
             if(player === null || player === undefined) {
                 errorEmbed.addField('Error','Dieser Spieler existiert nicht.');
+                errorEmbed.setFooter('Versuche es in ca 2 Minuten nochmal, falls der Spieler existiert.')
                 channel.send(errorEmbed);
             } else {
             var uuid = player.uuid;
@@ -393,12 +446,13 @@ function stamm_cmd(msg, args) {
                             var beantragungsEmbed = new MessageEmbed();
                             beantragungsEmbed.setColor(COLORS.silver);
                             beantragungsEmbed.setColor(COLORS.pumpkin);
-                            beantragungsEmbed.setTitle(`Stamm Beantragung von ${msg.member.user.tag}`);
+                            beantragungsEmbed.setTitle("Stamm Beantragung von `" + msg.member.user.tag + "`");
                             beantragungsEmbed.addField('IGN:', "`" + player.displayname + "`");
                             beantragungsEmbed.addField('Gilde: ', guildTag);
                             beantragungsChannel.send('', beantragungsEmbed);
                         } else {
-                            errorEmbed.addField('Error', 'Beantragung fehlgeschlagen. Du bist weniger als 21d in der Gilde');
+                            errorEmbed.addField('Error', 'Beantragung fehlgeschlagen. Du bist weniger als 21d in der Gilde.');
+                            errorEmbed.setFooter('Versuche es in ca 2 Minuten nochmal, falls der Spieler existiert.')
                             channel.send(errorEmbed);
                         }
                     } else {
@@ -475,13 +529,15 @@ function role_cmd(msg, args) {
         fetch("https://api.hypixel.net/player?key=" + config.api_key + "&name=" + args[0])
         .then(result => result.json())
         .then(({ player }) => {
-            if(player === null) {        
+            if(player === undefined) {        
                 errorEmbed.addField('Error', 'Spieler nicht gefunden.');
+                errorEmbed.addField('Information', 'Falls der Spieler existiert und trotzdem nicht gefunden wurde, dann versuche diesen Befehl in 2-3 Minuten erneut auszuführen.\n\n Falls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe. \nBugs des Bots bitte bei den Developern des Servers melden.')
                 channel.send(errorEmbed);
             } else {
+                
                 var uuid = player.uuid, 
                     profiles =  player.stats.SkyBlock.profiles;
-                fetch("https://api.hypixel.net/skyblock/profile?key=" + config.api_key + "&profile=" + getProfileID(args[1]), profiles)
+                fetch("https://api.hypixel.net/skyblock/profile?key=" + config.api_key + "&profile=" + getProfileID(args[1], profiles))
                 .then(result => result.json())
                 .then(({ profile }) => {
                     if(player.socialMedia != undefined) {
@@ -505,7 +561,7 @@ function role_cmd(msg, args) {
                                         channel.send(guildEmbed);
                                     }
                                 })      
-                                if(profile != null) {      
+                                if(profile != undefined) {      
                                     if(profile.members[uuid].unlocked_coll_tiers != undefined && 
                                     profile.members[uuid].experience_skill_foraging != undefined &&
                                     profile.members[uuid].experience_skill_combat != undefined &&
@@ -628,669 +684,470 @@ function role_cmd(msg, args) {
                                             maxedCollections++;
                                         } else { author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Iron Ingot')); }
                                         if(unlockedCollections.includes("GOLD_INGOT_9")) {
-                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Gold Ingot'));
+                                            author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Gold Ingot'));
                                             maxedMiningCollections++;
                                             maxedCollections++;
-                                        } else { author.roles.remove(guild2.roles.cache.find(role => role.name === 'Gold Ingot')); }
-                            var diamond = colls.includes("DIAMOND_9");
-                            if(diamond === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Diamond');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Diamond');
-                                author.roles.remove(seedsr);
-                            }
-                            var lapis = colls.includes("INK_SACK:4_10");
-                            if(lapis === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Lapis Lazuli');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Lapis Lazuli');
-                                author.roles.add(seedsr);
-                            }
-                            var emerald = colls.includes("EMERALD_9");
-                            if(emerald === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Emerald');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++ 
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Emerald');
-                                author.roles.remove(seedsr);
-                            }
-                            var redstone = colls.includes("REDSTONE_16");
-                            if(redstone === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Redstone');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Redstone');
-                                author.roles.remove(seedsr);
-                            }
-                            var nether_quartz = colls.includes("QUARTZ_9");
-                            if(nether_quartz === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Nether Quartz');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Nether Quartz');
-                                author.roles.remove(seedsr);
-                            }
-                            var obsi = colls.includes("OBSIDIAN_10");
-                            if(obsi === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Obsidian');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Obsidian');
-                                author.roles.remove(seedsr);
-                            }
-                            var glow = colls.includes("GLOWSTONE_DUST_9");
-                            if(glow === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Glowstone');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Glowstone');
-                                author.roles.remove(seedsr);
-                            }
-                            var gravel = colls.includes("GRAVEL_9");
-                            if(gravel === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Gravel');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Gravel');
-                                author.roles.remove(seedsr);
-                            }
-                            var ice = colls.includes("ICE_10");
-                            if(ice === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Ice');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            }  else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Ice');
-                                author.roles.remove(seedsr);
-                            }
-                            var netherrack = colls.includes("NETHERRACK_3");
-                            if(netherrack === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Netherrack');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Netherrack');
-                                author.roles.remove(seedsr);
-                            }
-                            var sand = colls.includes("SAND_7");
-                            if(sand === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Sand');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            }  else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Sand');
-                                author.roles.remove(seedsr);
-                            }
-                            var endstone = colls.includes("ENDER_STONE_10");
-                            if(endstone === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'End Stone');
-                                author.roles.add(seedsr);
-                                coll_max_mining++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'End Stone');
-                                author.roles.remove(seedsr);
-                            }
-                            if(unlockedCollections.includes("MITHRIL_9")) {
-                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Mithril'));
-                            } else {
-                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Mithril'));
-                            }
-                
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Gold Ingot')); }
+                                        if(unlockedCollections.includes("DIAMOND_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Diamond'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Diamond')); }
+                                        if(unlockedCollections.includes("INK_SACK:4_10")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Lapis Lazuli'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Lapis Lazuli')); }
+                                        if(unlockedCollections.includes("EMERALD_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Emerald'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Emerald')); }
+                                        if(unlockedCollections.includes("REDSTONE_16")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Redstone'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Redstone')); }
+                                        if(unlockedCollections.includes("QUARTZ_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Nether Quartz'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Nether Quartz')); }
+                                        if(unlockedCollections.includes("QUARTZ_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Nether Quartz'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Nether Quartz')); }
+                                        if(unlockedCollections.includes("OBSIDIAN_10")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Obsidian'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Obsidian')); }
+                                        if(unlockedCollections.includes("OBSIDIAN_10")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Obsidian'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Obsidian')); }
+                                        if(unlockedCollections.includes("OBSIDIAN_10")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Obsidian'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Obsidian')); }
+                                        if(unlockedCollections.includes("GLOWSTONE_DUST_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Glowstone'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Glowstone')); }
+                                        if(unlockedCollections.includes("GRAVEL_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Gravel'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Gravel')); }
+                                        if(unlockedCollections.includes("ICE_10")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Ice'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Ice')); }
+                                        if(unlockedCollections.includes("NETHERRACK_3")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Netherrack'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Netherrack')); }
+                                        if(unlockedCollections.includes("SAND_7")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Sand'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Sand')); }
+                                        if(unlockedCollections.includes("ENDER_STONE_10")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'End Stone'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'End Stone')); }
+                                        if(unlockedCollections.includes("MITHRIL_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Mithril'));
+                                            maxedMiningCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Mithril')); }
                             /*
                             *    Combat
                             */
-                            var coll_max_combat = 0
-                            var rotten = colls.includes("ROTTEN_FLESH_10");
-                            if(rotten === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Rotten Flesh');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Rotten Flesh');
-                                author.roles.remove(seedsr);
-                            }
-                            var bone = colls.includes("BONE_10");
-                            if(bone === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Bone');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Bone');
-                                author.roles.remove(seedsr);
-                            }
-                            var string = colls.includes("STRING_9");
-                            if(string === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'String');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'String');
-                                author.roles.remove(seedsr);
-                            }
-                            var spider_eye = colls.includes("SPIDER_EYE_9");
-                            if(spider_eye === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Spider Eye');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Spider Eye');
-                                author.roles.remove(seedsr);
-                            }
-                            var gunpowder = colls.includes("SULPHUR_9");
-                            if(gunpowder === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Gunpowder');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Gunpowder');
-                                author.roles.remove(seedsr);
-                            }
-                            var enderpearl = colls.includes("ENDER_PEARL_9");
-                            if(enderpearl === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Enderpearl');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Enderpearl');
-                                author.roles.remove(seedsr);
-                            }
-                            var ghasttear = colls.includes("GHAST_TEAR_9");
-                            if(ghasttear === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Ghast Tear');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Ghast Tear');
-                                author.roles.remove(seedsr);
-                            }
-                            var slimeball = colls.includes("SLIME_BALL_9");
-                            if(slimeball === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Slimeball');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Slimeball');
-                                author.roles.remove(seedsr);
-                            }
-                            var blazerod = colls.includes("BLAZE_ROD_9");
-                            if(blazerod === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Blaze Rod');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Blaze Rod');
-                                author.roles.remove(seedsr);
-                            }
-                            var magmacream = colls.includes("MAGMA_CREAM_9");
-                            if(magmacream === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Magma Cream');
-                                author.roles.add(seedsr);
-                                coll_max_combat++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Magma Cream');
-                                author.roles.remove(seedsr);
-                            }
+
+                                        var maxedCombatCollections = 0;
+                                        if(unlockedCollections.includes("ROTTEN_FLESH_10")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Rotten Flesh'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Rotten Flesh')); }
+                                        if(unlockedCollections.includes("BONE_10")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Bone'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Bone')); }
+                                        if(unlockedCollections.includes("STRING_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'String'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'String')); }
+                                        if(unlockedCollections.includes("SPIDER_EYE_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Spider Eye'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Spider Eye')); }
+                                        if(unlockedCollections.includes("SULPHUR_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Gunpowder'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Gunpowder')); }
+                                        if(unlockedCollections.includes("ENDER_PEARL_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Enderpearl'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Enderpearl')); }
+                                        if(unlockedCollections.includes("GHAST_TEAR_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Ghast Tear'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Ghast Tear')); }
+                                        if(unlockedCollections.includes("SLIME_BALL_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Slimeball'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Slimeball')); }
+                                        if(unlockedCollections.includes("BLAZE_ROD_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Blaze Rod'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Blaze Rod')); }
+                                        if(unlockedCollections.includes("MAGMA_CREAM_9")) {
+                                            author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Magma Cream'));
+                                            maxedCombatCollections++;
+                                            maxedCollections++;
+                                        } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Magma Cream')); }
                             /*
                             *   Foraging
                             */
-                            var coll_max_foraging = 0
-                            var oak = colls.includes("LOG_9");
-                            if(oak === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Oak Wood');
-                                author.roles.add(seedsr);
-                                coll_max_foraging++
-                                maxed_colls++
-                            } else {
-                                    const seedsr = guild2.roles.cache.find(role => role.name === 'Oak Wood');
-                                author.roles.remove(seedsr);
-                            }
-                            var spruce = colls.includes("LOG:1_9");
-                            if(spruce === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Spruce Wood');
-                                author.roles.add(seedsr);
-                                coll_max_foraging++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Spruce Wood');
-                                author.roles.remove(seedsr);
-                            }
-                            var birch = colls.includes("LOG:2_10");
-                            if(birch === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Birch Wood');
-                                author.roles.add(seedsr);
-                                coll_max_foraging++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Birch Wood');
-                                author.roles.remove(seedsr);
-                            }
-                            var dark_oak = colls.includes("LOG_2:1_9");
-                            if(dark_oak === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Dark Oak Wood');
-                                author.roles.add(seedsr);
-                                coll_max_foraging++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Dark Oak Wood');
-                                author.roles.remove(seedsr);
-                            }
-                            var acacia = colls.includes("LOG_2_9");
-                            if(acacia === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Acacia Wood');
-                                author.roles.add(seedsr);
-                            coll_max_foraging++
-                            maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Acacia Wood');
-                                author.roles.remove(seedsr);
-                            }
-                            var jungle = colls.includes("LOG:3_9");
-                            if(jungle === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Jungle Wood');
-                                author.roles.add(seedsr);
-                                coll_max_foraging++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Jungle Wood');
-                                author.roles.add(seedsr);
-                            }
+                            var maxedForagingCollections = 0
+                            if(unlockedCollections.includes("LOG_9")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Oak Wood'));
+                                maxedForagingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Oak Wood')); }
+                            if(unlockedCollections.includes("LOG:1_9")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Spruce Wood'));
+                                maxedForagingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Spruce Wood')); }
+                            if(unlockedCollections.includes("LOG:2_10")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Birch Wood'));
+                                maxedForagingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Birch Wood')); }
+                            if(unlockedCollections.includes("LOG_2:1_9")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Dark Oak Wood'));
+                                maxedForagingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Dark Oak Wood')); }
+                            if(unlockedCollections.includes("LOG_2_9")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Acacia Wood'));
+                                maxedForagingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Acacia Wood')); }
+                            if(unlockedCollections.includes("LOG:3_9")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Jungle Wood'));
+                                maxedForagingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Jungle Wood')); }
                             /*
                             *    Fishing
                             */
-                            var coll_max_fishing
-                            var raw_fish = colls.includes("RAW_FISH_11");
-                            if(raw_fish === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Raw Fish');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Raw Fish');
-                                author.roles.add(seedsr);
-                            }
-                            var raw_salmon = colls.includes("RAW_FISH:1_9");
-                            if(raw_salmon === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Raw Salmon');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Raw Salmon');
-                                author.roles.remove(seedsr);
-                            }
-                            var clownfish = colls.includes("RAW_FISH:2_7");
-                            if(clownfish === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Clownfish');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Clownfish');
-                                author.roles.remove(seedsr);
-                            }
-                            var pufferfish = colls.includes("RAW_FISH:3_10");
-                            if(pufferfish === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Pufferfish');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Pufferfish');
-                                author.roles.remove(seedsr);
-                            }
-                            var prismarine_shard = colls.includes("PRISMARINE_SHARD_5");
-                            if(prismarine_shard === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Prismarine Shard');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Prismarine Shard');
-                                author.roles.remove(seedsr);
-                            }
-                            var prismarine_crystal = colls.includes("PRISMARINE_CRYSTALS_7");
-                            if(prismarine_crystal === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Prismarine Crystals');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Prismarine Crystals');
-                                author.roles.remove(seedsr);
-                            }
-                            var clay = colls.includes("CLAY_BALL_5");
-                            if(clay === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Clay');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Clay');
-                                author.roles.remove(seedsr);
-                            }
-                            var lily_pad = colls.includes("WATER_LILY_9");
-                            if(lily_pad === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Lily Pad');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Lily Pad');
-                                author.roles.remove(seedsr);
-                            }
-                            var ink_sack = colls.includes("INK_SACK_9");
-                            if(ink_sack === true) {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Ink Sack');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Ink Sack');
-                                author.roles.remove(seedsr);
-                            }
-                            var sponge = colls.includes("SPONGE_9");
-                            if(sponge === true) {
-                            const seedsr = guild2.roles.cache.find(role => role.name === 'Sponge');
-                                author.roles.add(seedsr);
-                                coll_max_fishing++
-                                maxed_colls++
-                            } else {
-                                const seedsr = guild2.roles.cache.find(role => role.name === 'Sponge');
-                                author.roles.remove(seedsr);
-                            }
+                            var maxedFishingCollections = 0;
+                            if(unlockedCollections.includes("RAW_FISH_11")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Raw Fish'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Raw Fish')); }
+                            if(unlockedCollections.includes("RAW_FISH:1_9")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Raw Salmon'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Raw Salmon')); }
+                            if(unlockedCollections.includes("RAW_FISH:2_7")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Clownfish'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Clownfish')); }
+                            if(unlockedCollections.includes("RAW_FISH:3_10")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Pufferfish'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Pufferfish')); }
+                            if(unlockedCollections.includes("PRISMARINE_SHARD_5")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Prismarine Shard'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Prismarine Shard')); }
+                            if(unlockedCollections.includes("PRISMARINE_CRYSTALS_7")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Prismarine Crystals'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Prismarine Crystals')); }
+                            if(unlockedCollections.includes("CLAY_BALL_5")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Clay'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Clay')); }
+                            if(unlockedCollections.includes("WATER_LILY_9")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Lily Pad'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Lily Pad')); }
+                            if(unlockedCollections.includes("INK_SACK_9")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Ink Sack'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Ink Sack')); }
+                            if(unlockedCollections.includes("SPONGE_9")) {
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Sponge'));
+                                maxedFishingCollections++;
+                                maxedCollections++;
+                            } else { author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Sponge')); }
                             //Placeholder roles
-                            if(guild2.roles.cache.find(role => role.id === '750370595811623042') != null) {
-                            if(coll_max_farming > 0) {
-                                    const farmingr = guild2.roles.cache.find(role => role.id === '750370595811623042');
-                                    author.roles.add(farmingr)
+                            if(maxedFarmingCollections > 0) {
+                                try { author.roles.add(msgGuild.roles.cache.find(role => role.id === '750370595811623042')); } catch {}
                             }
+                            if(maxedMiningCollections > 0) {
+                                try { author.roles.add(msgGuild.roles.cache.find(role => role.id === '769989929789816882')); } catch {}
                             }
-                            if(guild2.roles.cache.find(role => role.id === '769989929789816882') != null) {
-                            if(coll_max_mining > 0) {
-                                const miningr = guild2.roles.cache.find(role => role.id === '769989929789816882');
-                                author.roles.add(miningr)
+                            if(maxedCombatCollections > 0) {
+                                try { author.roles.add(msgGuild.roles.cache.find(role => role.id === '777193990964510760')); } catch {}
                             }
+                            if(maxedForagingCollections > 0) {
+                                try { author.roles.add(msgGuild.roles.cache.find(role => role.id === '777196588439175200')); } catch {}
                             }
-                            if(guild2.roles.cache.find(role => role.id === '777193990964510760') != null) {
-                            if(coll_max_combat > 0) {
-                                const combatr = guild2.roles.cache.find(role => role.id === '777193990964510760');
-                                author.roles.add(combatr)
+                            if(maxedFishingCollections > 0) {
+                                try { author.roles.add(msgGuild.roles.cache.find(role => role.id === '777196860653174833')); } catch {}
                             }
-                        }
-                        if(guild2.roles.cache.find(role => role.id === '777196588439175200') != null) {
-                            if(coll_max_foraging > 0) {
-                                const foragingr = guild2.roles.cache.find(role => role.id === '777196588439175200');
-                                author.roles.add(foragingr)
-                            }
-                        }
-                        if(guild2.roles.cache.find(role => role.id === '777196860653174833') != null) {
-                            if(coll_max_fishing > 0) {
-                                const fishingr = guild2.roles.cache.find(role => role.id === '777196860653174833');
-                                author.roles.add(fishingr)
-                            }
-                        }
                             /*
                             *   Skills
                             */
-                            function isForaging25(exp_foraging) {
-                                if(exp_foraging >= 3000000) {
-                                    return "0"
+                            function isForaging25(foragingExp) {
+                                if(foragingExp >= 3000000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }   
-                            function isCombat25(exp_combat) {
-                                if(exp_combat >= 3000000) {
-                                    return "0"
+                            function isCombat25(combatExp) {
+                                if(combatExp >= 3000000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }   
-                            function isMining25(exp_mining) {
-                                if(exp_mining >= 3000000) {
-                                    return "0"
+                            function isMining25(miningExp) {
+                                if(miningExp >= 3000000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }   
-                            function isFarming25(exp_farming) {
-                                if(exp_farming >= 3000000) {
-                                    return "0"
+                            function isFarming25(farmingExp) {
+                                if(farmingExp >= 3000000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }   
-                            function isAlchemy25(exp_alchemy) {
-                            
-                                
-                                if(exp_alchemy >= 3000000) {
-                                    return "0"
+                            function isAlchemy25(alchemyExp) {   
+                                if(alchemyExp >= 3000000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }   
-                            function isTaming25(exp_taming) {
-                                if(exp_taming >= 3000000) {
-                                    return "0"
+                            function isTaming25(tamingExp) {
+                                if(tamingExp >= 3000000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }   
-                            function isEnchanting25(exp_enchanting) {
-                                if(exp_enchanting >= 3000000) {
-                                    return "0"
+                            function isEnchanting25(enchantingExp) {
+                                if(enchantingExp >= 3000000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }   
-                            function isFishing25(exp_fishing) {
-                                if(exp_fishing >= 3000000) {
-                                    return "0"
+                            function isFishing25(fishingExp) {
+                                if(fishingExp >= 3000000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }   
-                            function isRev7(slayer_exp_zombie) {
-                                if(slayer_exp_zombie >= 100000) {
-                                    return "0"
+                            function isRev7(slayerExpZombie) {
+                                if(slayerExpZombie >= 100000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }  
-                            function isTara7(slayer_exp_spider) {
-                                if(slayer_exp_spider >= 100000) {
-                                    return "0"
+                            function isTara7(slayerExpSpider) {
+                                if(slayerExpSpider >= 100000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }   
-                            function isSven7(slayer_exp_wolf) {
-                                if(slayer_exp_wolf >= 100000) {
-                                    return "0"
+                            function isSven7(slayerExpWolf) {
+                                if(slayerExpWolf >= 100000) {
+                                    return "0";
                                 } else {
-                                    return "1"
+                                    return "1";
                                 }
                             }       
                             /*
                             *   Slayer
                             */
                                     
-                            var slayer_exp_zombie = profile.members[uuid].slayer_bosses.zombie.xp
-                            var slayer_exp_wolf = profile.members[uuid].slayer_bosses.wolf.xp
-                            var slayer_exp_spider = profile.members[uuid].slayer_bosses.spider.xp
-            
-                            const zombie = guild2.roles.cache.find(role => role.name === 'Revenant Horror 7');
-                            const spider = guild2.roles.cache.find(role => role.name === 'Tarantula Broodfather 7');
-                            const wolf = guild2.roles.cache.find(role => role.name === 'Sven Packmaster 7');
+                            var slayer_exp_zombie = profile.members[uuid].slayer_bosses.zombie.xp,
+                                slayer_exp_wolf = profile.members[uuid].slayer_bosses.wolf.xp,
+                                slayer_exp_spider = profile.members[uuid].slayer_bosses.spider.xp;
                             /*
                             *   Create final embed
                             */
-                            var role_embed = new MessageEmbed()
-                            role_embed.setTitle('Role Claim')
-                            role_embed.setColor(COLORS.Emerland)
-                            role_embed.setThumbnail('https://i.imgur.com/p6wcIcc.png')
-                            role_embed.setURL('https://sky.lea.moe/stats/' + args[0] + '/' + args[1] )
-                            role_embed.addFields(
+                            var roleEmbed = new MessageEmbed()
+                            roleEmbed.setTitle('Role Claim')
+                            roleEmbed.setColor(COLORS.Emerland)
+                            roleEmbed.setThumbnail('https://i.imgur.com/p6wcIcc.png')
+                            roleEmbed.setURL('https://sky.lea.moe/stats/' + args[0] + '/' + args[1] )
+                            roleEmbed.addFields(
                                 { name: 'Skill Rollen', value: 'Fügt dir eine Skill Rolle hinzu, wenn du in diesem Skill Level 25 bist.' }
                             )
-                            if(isForaging25(exp_foraging) === "0") {
-                                role_embed.addField('Foraging 25', ':green_square:')
-                                const fora = guild2.roles.cache.find(role => role.name === 'Foraging 25');
-                                author.roles.add(fora);
+                            if(isForaging25(foragingExp) === "0") {
+                                roleEmbed.addField('Foraging 25', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Foraging 25'));
                             } else {
-                                role_embed.addField('Foraging 25', ':red_square:')
-                                const fora = guild2.roles.cache.find(role => role.name === 'Foraging 25');
-                                author.roles.remove(fora);
+                                roleEmbed.addField('Foraging 25', ':red_square:');
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Foraging 25'));
                             }
-                            if(isCombat25(exp_combat) === "0") {
-                                role_embed.addField('Combat 25', ':green_square:')
-                                const comb = guild2.roles.cache.find(role => role.name === 'Combat 25');
-                                author.roles.add(comb);
+                            if(isCombat25(combatExp) === "0") {
+                                roleEmbed.addField('Combat 25', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Combat 25'));
                             } else {
-                                role_embed.addField('Combat 25', ':red_square:')
-                                const comb = guild2.roles.cache.find(role => role.name === 'Combat 25');
-                                author.roles.remove(comb);
+                                roleEmbed.addField('Combat 25', ':red_square:');
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Combat 25'));
                             }
-                            if(isMining25(exp_mining) === "0") {
-                                role_embed.addField('Mining 25', ':green_square:')
-                                const mini = guild2.roles.cache.find(role => role.name === 'Mining 25');
-                                author.roles.add(mini);
+                            if(isMining25(miningExp) === "0") {
+                                roleEmbed.addField('Mining 25', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Mining 25'));
                             } else {
-                                role_embed.addField('Mining 25', ':red_square:')
-                                const mini = guild2.roles.cache.find(role => role.name === 'Mining 25');
-                                author.roles.remove(mini);
+                                roleEmbed.addField('Mining 25', ':red_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Mining 25'));
                             }
-                            if(isFarming25(exp_farming) === "0") {
-                                role_embed.addField('Farming 25', ':green_square:')
-                                const farm = guild2.roles.cache.find(role => role.name === 'Farming 25');
-                                author.roles.add(farm);
+                            if(isFarming25(farmingExp) === "0") {
+                                roleEmbed.addField('Farming 25', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Farming 25'));
                             } else {
-                                role_embed.addField('Farming 25', ':red_square:')
-                                const farm = guild2.roles.cache.find(role => role.name === 'Farming 25');
-                                author.roles.remove(farm);
+                                roleEmbed.addField('Farming 25', ':red_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Farming 25'));
                             }
-                            if(isAlchemy25(exp_alchemy) === "0") {
-                                role_embed.addField('Alchemy 25', ':green_square:')
-                                const alch = guild2.roles.cache.find(role => role.name === 'Alchemy 25');
-                                author.roles.add(alch);
+                            if(isAlchemy25(alchemyExp) === "0") {
+                                roleEmbed.addField('Alchemy 25', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Alchemy 25'));
                             } else {
-                                role_embed.addField('Alchemy 25', ':red_square:')
-                                const alch = guild2.roles.cache.find(role => role.name === 'Alchemy 25');
-                                author.roles.remove(alch);
+                                roleEmbed.addField('Alchemy 25', ':red_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Alchemy 25'));
                             }
-                            if(isTaming25(exp_taming) === "0") {
-                                role_embed.addField('Taming 25', ':green_square:')
-                                const tami = guild2.roles.cache.find(role => role.name === 'Taming 25');
-                                author.roles.add(tami);
+                            if(isTaming25(tamingExp) === "0") {
+                                roleEmbed.addField('Taming 25', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Taming 25'));
                             } else {
-                                role_embed.addField('Taming 25', ':red_square:')
-                                const tami = guild2.roles.cache.find(role => role.name === 'Taming 25');
-                                author.roles.remove(tami);
+                                roleEmbed.addField('Taming 25', ':red_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Taming 25'));
                             }
-                            if(isEnchanting25(exp_enchanting) === "0") {
-                                role_embed.addField('Enchanting 25', ':green_square:')
-                                const ench = guild2.roles.cache.find(role => role.name === 'Enchanting 25');
-                                author.roles.add(ench);
+                            if(isEnchanting25(enchantingExp) === "0") {
+                                roleEmbed.addField('Enchanting 25', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Enchanting 25'));
                             } else {
-                                role_embed.addField('Enchanting 25', ':red_square:')
-                                const ench = guild2.roles.cache.find(role => role.name === 'Enchanting 25');
-                                author.roles.remove(ench);
+                                roleEmbed.addField('Enchanting 25', ':red_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Enchating 25'));
                             }
-                            if(isFishing25(exp_fishing) === "0") {
-                                role_embed.addField('Fishing 25', ':green_square:')
-                                const fish = guild2.roles.cache.find(role => role.name === 'Fishing 25');
-                                author.roles.add(fish);
+                            if(isFishing25(fishingExp) === "0") {
+                                roleEmbed.addField('Fishing 25', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Fishing 25'));
                             } else {
-                                role_embed.addField('Fishing 25', ':red_square:')
-                                const fish = guild2.roles.cache.find(role => role.name === 'Fishing 25');
-                                author.roles.remove(fish);
+                                roleEmbed.addField('Fishing 25', ':red_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Fishing 25'));
                             }
-                            role_embed.addFields(
+                            roleEmbed.addFields(
                                 { name: 'Slayer Rollen', value: 'Fügt dir eine Slayer Rolle hinzu, wenn du bei diesem Slayer Level 7 bist.' }
                             )
-                            if(isRev7(slayer_exp_zombie) === "0") {
-                                role_embed.addField('Revenant Horror 7', ':green_square:')
-                                author.roles.add(zombie);
+                            if(isRev7(slayer_exp_spider) === "0") {
+                                roleEmbed.addField('Revenant Horror 7', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Revenant Horror 7'));
                             } else {
-                                role_embed.addField('Revenant Horror 7', ':red_square:')
-                                author.roles.remove(zombie);
+                                roleEmbed.addField('Revenant Horror 7', ':red_square:');
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Revenant Horror 7'));
                             }
                             if(isTara7(slayer_exp_spider) === "0") {
-                                role_embed.addField('Tarantula Broodfather 7', ':green_square:')
-                                author.roles.add(spider);
+                                roleEmbed.addField('Tarantula Broodfather 7', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Tarantula Broodfather 7'));
                             } else {
-                                role_embed.addField('Tarantula Broodfather 7', ':red_square:')
-                                author.roles.remove(spider);
+                                roleEmbed.addField('Tarantula Broodfather 7', ':red_square:');
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Tarantula Broodfather 7'));
                             }
                             if(isSven7(slayer_exp_wolf) === "0") {
-                                role_embed.addField('Sven Packmaster 7', ':green_square:')
-                                author.roles.add(wolf);
+                                roleEmbed.addField('Sven Packmaster 7', ':green_square:');
+                                author.roles.add(msgGuild.roles.cache.find(role => role.name === 'Sven Packmaster 7'));
                             } else {
-                                role_embed.addField('Sven Packmaster 7', ':red_square:')
-                                author.roles.remove(wolf);
+                                roleEmbed.addField('Sven Packmaster 7', ':red_square:');
+                                author.roles.remove(msgGuild.roles.cache.find(role => role.name === 'Sven Packmaster 7'));
                             }
-                            role_embed.addField('Collections', 'Dir wurden ' + maxed_colls + ' Collection-Rollen hinzugefügt.')
-                            chan.send(role_embed)                   
+                            roleEmbed.addField('Collections', 'Dir wurden ' + maxedCollections + ' Collection-Rollen hinzugefügt.');
+                            channel.send(roleEmbed);                   
                         } else {
-                            chan.send('Deine API ist nicht eingeschalten oder du hast nicht alle Skills freigeschalten!')
+                            errorEmbed.addField('Error', 'Deine API ist nicht eingeschalten oder du hast nicht alle Skills freigeschalten!')
+                            errorEmbed.addField('Information', 'So aktivierst du deine API: \nHypixel SkyBlock -> SkyBlock Menu -> Einstellungen -> API\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.')    
+                            channel.send(errorEmbed);
                         }
-                            }    
+                            } else {
+                                errorEmbed.addField('Information', 'Falls dieses Profil existiert und es trotzdem nicht gefunden wurde, dann versuche diesen Befehl in 2-3 Minuten erneut auszuführen.\n\n Falls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe. \nBugs des Bots bitte bei den Developern des Servers melden.')
+                                channel.send(errorEmbed);
+                            }
                     } else {
-                            chan.send('Dieser Minecraft Account ist nicht mit deinem Discord Account verbunden!')
+                        errorEmbed.addField('Error', 'Dieser Minecraft Account ist nicht mit deinem Discord Account verbunden!')
+                        errorEmbed.addField('Information', 'So verbindest du deinen Minecraft Account mit deinem Discord Account: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.')    
+                        channel.send(errorEmbed);
                         } 
                         } else {
-                            chan.send('Dieser Minecraft Account ist nicht mit deinem Discord Account verbunden!')
-                        }
+                            errorEmbed.addField('Error', 'Dieser Minecraft Account ist nicht mit deinem Discord Account verbunden!')
+                            errorEmbed.addField('Information', 'So verbindest du deinen Minecraft Account mit deinem Discord Account: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.')    
+                            channel.send(errorEmbed);
+                            }
                     } else {
-                        chan.send('Dieser Minecraft Account ist nicht mit deinem Discord Account verbunden!')
-                    }
+                        errorEmbed.addField('Error', 'Dieser Minecraft Account ist nicht mit deinem Discord Account verbunden!')
+                        errorEmbed.addField('So verbindest du deinen Minecraft Account mit deinem Discord Account: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.')    
+                        channel.send(errorEmbed);
+                        }
                 } else {
-                    chan.send('Dieser Minecraft Account ist nicht mit deinem Discord Account verbunden!')
+                    errorEmbed.addField('Error', 'Dieser Minecraft Account ist nicht mit deinem Discord Account verbunden!')
+                    errorEmbed.addField('So verbindest du deinen Minecraft Account mit deinem Discord Account: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.')    
+                    channel.send(errorEmbed);
                 }
             });
         }       
     }); 
 } else {
-    chan.send("Nutze den Befehl so: r!roleclaim <name> <profile>")
+    channel.send("Nutze den Befehl so: r!roleclaim <name> <profile>")
 }  
 }
 function gscammer_cmd(msg, args) {
         if(msg.member.roles.cache.some(role => role.name === 'Team (Ping)')) { 
         var embed_i = new MessageEmbed();
+        embed_i.addField('Information', 'Wenn diese Nachricht leer bleibt, dann hat die Gilde 0 Scammer :).')
         msg.channel.send(embed_i).then(msge => {
-        embed_i.setFooter('Wenn diese Nachricht leer bleibt, dann hat die Gilde 0 Scammer :).')
         fetch("https://api.hypixel.net/guild?key=47cb944b-4834-42e6-ab0f-d09914558bac&player=64e008cbc99b4397ae670d4624acf9d7")
         .then(result => result.json())
         .then(({ guild }) => {    
@@ -1332,6 +1189,7 @@ function dungeon_verify_command(msg, args) {
     fetch("https://api.hypixel.net/player?key=" + config.api_key + "&name=" + args[0])
     .then(result => result.json())
     .then(({ player }) => {
+        if(player != undefined) {
         if(player.socialMedia != undefined) {
             if(player.socialMedia.links != undefined) {
                 var dc_tag_hypixel = player.socialMedia.links.DISCORD;
@@ -1350,20 +1208,24 @@ function dungeon_verify_command(msg, args) {
                         })
                     } else {
                         const user = client.users.cache.get(msg.member.user.id);
-                        user.send('Um dich in <#808788152541642782> zu verifizieren, musst du deinen Discord Account auf Hypixel verbinden: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord');
+                        user.send('Um dich in <#808788152541642782> zu verifizieren, musst du deinen Discord Account auf Hypixel verbinden: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.');
                     }
                 } else {
                     const user = client.users.cache.get(msg.member.user.id);
-                    user.send('Um dich in <#808788152541642782> zu verifizieren, musst du deinen Discord Account auf Hypixel verbinden: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord');
+                    user.send('Um dich in <#808788152541642782> zu verifizieren, musst du deinen Discord Account auf Hypixel verbinden: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.');
                 }
             } else {
                 const user = client.users.cache.get(msg.member.user.id);
-                user.send('Um dich in <#808788152541642782> zu verifizieren, musst du deinen Discord Account auf Hypixel verbinden: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord');
+                user.send('Um dich in <#808788152541642782> zu verifizieren, musst du deinen Discord Account auf Hypixel verbinden: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.');
             }
         } else {
             const user = client.users.cache.get(msg.member.user.id);
-            user.send('Um dich in <#808788152541642782> zu verifizieren, musst du deinen Discord Account auf Hypixel verbinden: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord');
+            user.send('Um dich in <#808788152541642782> zu verifizieren, musst du deinen Discord Account auf Hypixel verbinden: \nHypixel Main Lobby -> Profile -> Social Menu -> Discord\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.');
         }
+    } else {
+        const user = client.users.cache.get(msg.member.user.id);
+        user.send('Spieler für die Verifizierung in <#808788152541642782> konnte nicht gefunden werden. \nFalls der Spieler existiert und trotzdem nicht gefunden wurde, dann versuche dich bitte in 2-3 Minuten erneut zu verifizieren.\n \nFalls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe.');
+    }
     });
 } else {
     msg.reply('Gebe bitte einen Namen an <@' + msg.member.user.id + '>.')
@@ -1564,7 +1426,7 @@ function help_cmd(msg, args) {
     embed6.addField('Stamm-Command', 'r!stamm <name> - Stamm-Beantragungs-Command');
     embed6.addField('Cata-Command', 'r!cata - Gibt dir deine Catacombs-Skillrolle');
     embed6.addField('Verify-Command', 'r!dverify <name> - Verifiziert dich für Dungeons');
-    embed6.addField('~~Roleclaim-Command~~', 'r!roleclaim <name> <Skyblock-Profile> | Skill-,Slayer- und Gilden-Rollen claimen(z.B. Combat 25). **WICHTIG:** Euer Discord-Account auf Hypixel verlinkt sein.');
+    embed6.addField('Roleclaim-Command', 'r!roleclaim <name> <Skyblock-Profile> | Skill-,Slayer- und Gilden-Rollen claimen(z.B. Combat 25). **WICHTIG:** Euer Discord-Account auf Hypixel verlinkt sein.');
     embed6.addField('Spieler-Info-Command', 'r!pinfo <name> - Zeigt Informationen über den Spieler');
     embed6.addField('Bot-Info-Command', 'r!botinfo - Zeigt Infos über den Bot');
     embed6.addField('Hilfe-Command', 'r!help - Hilfenachricht des Bots');
@@ -1592,6 +1454,7 @@ function isNumeric(str) {
            !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 function urlaub_cmd(msg, args) {
+    var errorEmbed = new MessageEmbed();
     if(args.length === 2) {
     fetch("https://api.hypixel.net/player?key=" + config.api_key + "&name=" + args[0])
     .then(result => result.json())
@@ -1626,7 +1489,9 @@ function urlaub_cmd(msg, args) {
             }
         })
         } else {
-            msg.channel.send('Dieser Spieler existiert nicht.')
+            errorEmbed.addField('Error', 'Spieler wurde nicht gefunden.')
+            errorEmbed.addField('Information', 'Falls der Spieler existiert und trotzdem nicht gefunden wurde, dann versuche diesen Befehl in 2-3 Minuten erneut auszuführen.\n\n Falls dir diese Informationen nicht weiterhelfen konnten melde dich bitte in <#702109633157791745> für mehr Hilfe. \nBugs des Bots bitte bei den Developern des Servers melden.')
+            msg.channel.send(errorEmbed)
         }
     })
 } else {
@@ -1661,32 +1526,6 @@ function check_kickdays(msg, args) {
         msg.channel.send('Dazu hast du keine Berechtigungen!')
     }
     });
-}
-function guildLoop(guild, i) {
-    fetch("https://api.hypixel.net/skyblock/profiles?key=47cb944b-4834-42e6-ab0f-d09914558bac&uuid=" + guild.members[i].uuid)
-    .then(result1 => result1.json())
-    .then(({ profiles }) => {
-        console.log(i)
-        console.log(guild.members[i].uuid)
-        var parray = []
-        for(var p = 0; p < profiles.length; p++) {
-        var last_save = profiles[p].members[guild.members[i].uuid].last_save
-        parray.push(last_save)
-        parray.sort();
-       }
-       function getCataExp(last_save) {
-        var profilesobject = profiles;
-        for (var key of Object.keys(profilesobject)) {
-            if (profilesobject[key].members[player.uuid].last_save === last_save) {
-                return profilesobject[key].members[player.uuid].dungeons.dungeon_types.catacombs.experience
-            }
-        }
-        console.log('Dieses Profil existiert nicht.');
-        return;
-        }
-       console.log(guild.members[i].uuid + "  " + getCataExp(parray[parray.length - 1]))     
-       var farmingExp = getCataExp(parray[parray.length - 1]);
-    })   
 }
 function getLevelByXp(xp, type = 'regular', levelCap, personalCap){
     let xp_table;
@@ -1779,7 +1618,7 @@ async function guildinfo(msg, args) {
     var embed_i = new MessageEmbed();
     var date = new Date();
     connection.query("SELECT * FROM gstatsUses;", function (err, result, fields) {                 
-    function task(i, guild) { 
+    function task(i, guild, msge) { 
         setTimeout(function() { 
          fetch("https://api.hypixel.net/skyblock/profiles?key=47cb944b-4834-42e6-ab0f-d09914558bac&uuid=" + guild.members[i].uuid)
          .then(result1 => result1.json())
@@ -1787,13 +1626,12 @@ async function guildinfo(msg, args) {
              console.log(i)
              console.log(guild.members[i].uuid)
              var parray = []
-             if(profiles != null) {
+             if(profiles != undefined) {
          for(var p = 0; p < profiles.length; p++) {
              var last_save = profiles[p].members[guild.members[i].uuid].last_save
              parray.push(last_save)
              parray.sort();
          }
-     }
             function getFarming(last_save) {
              var profilesobject = profiles;
              for (var key of Object.keys(profilesobject)) {
@@ -1937,7 +1775,8 @@ async function guildinfo(msg, args) {
                  total_slayer_exp = total_slayer_exp + getWolf(parray[parray.length-1]) + getTara(parray[parray.length-1]) + getZombie(parray[parray.length-1])
              }
              if(i === guild.members.length-1) {
-                 connection.query(`UPDATE gstatsUses(Date, Members, FarmingExp, MiningExp, CombatExp, ForagingExp, FishingExp, EnchantingExp, AlchemyExp, TamingExp, SlayerExp) VALUES(${date.getTime()}, ${guild.members.length}, ${total_farming_exp}, ${total_mining_exp}, ${total_combat_exp}, ${total_foraging_exp}, ${total_fishing_exp}, ${total_enchanting_exp}, ${total_alchemy_exp}, ${total_taming_exp}, ${total_slayer_exp})`)
+                 connection.query(`DELETE FROM gstatsUses`)
+                 connection.query(`INSERT INTO gstatsUses(Date, Members, FarmingExp, MiningExp, CombatExp, ForagingExp, FishingExp, EnchantingExp, AlchemyExp, TamingExp, SlayerExp) VALUES(${date.getTime()}, ${guild.members.length}, ${total_farming_exp}, ${total_mining_exp}, ${total_combat_exp}, ${total_foraging_exp}, ${total_fishing_exp}, ${total_enchanting_exp}, ${total_alchemy_exp}, ${total_taming_exp}, ${total_slayer_exp})`)
                  embed_i.addFields(
                  { name: 'Farming', value: 'Total Exp: ' + (total_farming_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_farming_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_farming_exp/guild.members.length).level, inline: true},
                  { name: 'Mining', value: 'Total Exp: ' + (total_mining_exp/1000000).toFixed(1) + "m\nAverage Exp: " + ((total_mining_exp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(total_mining_exp/guild.members.length).level, inline: true},
@@ -1985,16 +1824,16 @@ async function guildinfo(msg, args) {
                  )
              msge.edit(embed_i)
              }
+            }
          })   
         }, 1000 * i); 
       }
         var string = JSON.stringify(result);
         var json =  JSON.parse(string);
-        console.log("0")
         for(var i = 0; i<json.length; i++) {
-        if(result[0].Date != undefined) {
-            if((date.getTime()-result[0].Date)>4320000000) {
-                if(msg.member.roles.cache.some(role => role.name === 'Team (Ping)')) { 
+        if(json[0] != undefined) {
+            console.log((date.getTime()-json[0].Date))
+            if((date.getTime()-json[0].Date)>43200000) {
                     var total_farming_exp = 0;
                     var total_mining_exp = 0;
                     var total_combat_exp = 0;
@@ -2020,16 +1859,13 @@ async function guildinfo(msg, args) {
                     .then(result => result.json())
                     .then(({ guild }) => {     
                         for(var i = 0; i<guild.members.length; i++) {
-                            task(i, guild)
+                            task(i, guild, msge)
                         }
                         embed_i.addField("Heute", 'Member: ' + guild.members.length)
                         msge.edit(embed_i)
                     })
                     msge.edit(embed_i)
                 })
-                    } else {
-                        msg.channel.send('Dazu hast du keine Rechte')
-                    }
             } else {
                 if(msg.member.roles.cache.some(role => role.name === 'Team (Ping)')) { 
                     msg.channel.send("Loading Data...").then(msge => {
@@ -2039,7 +1875,7 @@ async function guildinfo(msg, args) {
                         embed_i.setTitle('Guildstats-Tracker')
                         embed_i.setThumbnail('https://i.imgur.com/rD1j3vJ.jpeg')
                         embed_i.addField("Information", "Die Gilden Statistiken werden maximal alle 12h geupdated")
-                        embed_i.setFooter("Gilden_Statistiken")
+                        embed_i.setFooter("Der Druchschnitt der Level wurde anhand der durchschnittlichen Exp berechnet.")
                         embed_i.addField("Heute", 'Member: ' + guild.members.length)
                     embed_i.addFields(
                         { name: 'Farming', value: 'Total Exp: ' + (json[0].FarmingExp/1000000).toFixed(1) + "m\nAverage Exp: " + ((json[0].FarmingExp/guild.members.length)/1000000).toFixed(1) + "m\nAverage Level: " + getLevelByXp(json[0].FarmingExp/guild.members.length).level, inline: true},
@@ -2093,7 +1929,9 @@ async function guildinfo(msg, args) {
                     msg.channel.send('Dazu hast du keine Rechte')
                 }
             }
-        } else {
+        }
+        }
+        if(json[0] === undefined) {
             if(msg.member.roles.cache.some(role => role.name === 'Team (Ping)')) { 
                 var total_farming_exp = 0;
                 var total_mining_exp = 0;
@@ -2116,13 +1954,13 @@ async function guildinfo(msg, args) {
                 today1 = dd2-7 + '/' + mm2 + '/' + yyyy2;
                 today = dd2-1 + '/' + mm2 + '/' + yyyy2; 
                 embed_i.addField("Information", "Die Gilden Statistiken werden maximal alle 12h geupdated")
-                embed_i.setFooter("Gilden_Statistiken")
+                embed_i.setFooter("Der Druchschnitt der Level wurde anhand der durchschnittlichen Exp berechnet.")
                 msg.channel.send("Loading Data...").then(msge => {
                 fetch("https://api.hypixel.net/guild?key=47cb944b-4834-42e6-ab0f-d09914558bac&player=64e008cbc99b4397ae670d4624acf9d7")
                 .then(result => result.json())
                 .then(({ guild }) => {     
                     for(var i = 0; i<guild.members.length; i++) {
-                        task(i, guild)
+                        task(i, guild, msge)
                     }
                     embed_i.addField("Heute", 'Member: ' + guild.members.length)
                 })
@@ -2132,7 +1970,7 @@ async function guildinfo(msg, args) {
                     msg.channel.send('Dazu hast du keine Rechte')
                 }
         }
-    }
+    
     })
 }
 client.on('message', (msg) => { 
