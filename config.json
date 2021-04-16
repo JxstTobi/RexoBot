@@ -1,7 +1,12 @@
 {
-    "token": "Enter your token",
+    "token": "",
     "owner": "702790608649060432",
     "prefix": "r!",
-    "api_key": "Enter your hypixel api key"
-
+    "api_key": "You HypixelAPI key",
+    "hgg_key" : "Your HGGAPI key",
+//Database settings
+    "host": "",
+    "user": "",
+    "password": "",
+    "database": ""
 }
