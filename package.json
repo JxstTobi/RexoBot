@@ -12,16 +12,18 @@
   "dependencies": {
     "colors": "1.2.1",
     "cron": "^1.8.2",
-    "discord.js": "^12.5.1",
-    "discord.js-commando": "^0.12.2",
+    "discord-buttons-plugin": "^2.2.0",
+    "discord.js": "^12.5.3",
+    "discord.js-buttons": "^1.0.0",
+    "discord.js-commando": "^0.12.3",
     "hypixel-api": "^1.2.0",
-    "instagram-private-api": "^1.44.0",
-    "jquery": "^3.5.1",
+    "instagram-private-api": "^1.45.1",
+    "jquery": "^3.6.0",
     "mojang-api": "0.0.2",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.1",
     "parse-json": "^5.2.0",
-    "pm2": "^4.5.4",
+    "pm2": "^5.1.0",
     "ytdl-core": "^3.4.2"
   }
 }
