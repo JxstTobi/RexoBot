@@ -642,56 +642,112 @@ function role_cmd(msg, args) {
                                                     *   Skills
                                                     */
                                                     function isForaging25(foragingExp) {
-                                                        if (foragingExp >= 3000000) {
+                                                        if (foragingExp >= 3022425) {
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    }
+                                                    function isForaging50(foragingExp) {
+                                                        if (foragingExp >= 50172425) {
                                                             return true;
                                                         } else {
                                                             return false;
                                                         }
                                                     }
                                                     function isCombat25(combatExp) {
-                                                        if (combatExp >= 3000000) {
+                                                        if (combatExp >= 3022425) {
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    }
+                                                    function isCombat60(combatExp) {
+                                                        if (combatExp >= 111672425) {
                                                             return true;
                                                         } else {
                                                             return false;
                                                         }
                                                     }
                                                     function isMining25(miningExp) {
-                                                        if (miningExp >= 3000000) {
+                                                        if (miningExp >= 3022425) {
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    }
+                                                    function isMining60(miningExp) {
+                                                        if(miningExp >= 111672425) {
                                                             return true;
                                                         } else {
                                                             return false;
                                                         }
                                                     }
                                                     function isFarming25(farmingExp) {
-                                                        if (farmingExp >= 3000000) {
+                                                        if (farmingExp >= 3022425) {
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    }
+                                                    function isFarming60(farmingExp) {
+                                                        if(farmingExp >= 111672425) {
                                                             return true;
                                                         } else {
                                                             return false;
                                                         }
                                                     }
                                                     function isAlchemy25(alchemyExp) {
-                                                        if (alchemyExp >= 3000000) {
+                                                        if (alchemyExp >= 3022425) {
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    }
+                                                    function isAlchemy50(alchemyExp) {
+                                                        if(alchemyExp >= 50172425) {
                                                             return true;
                                                         } else {
                                                             return false;
                                                         }
                                                     }
                                                     function isTaming25(tamingExp) {
-                                                        if (tamingExp >= 3000000) {
+                                                        if (tamingExp >= 3022425) {
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    }
+                                                    function isTaming50(tamingExp) {
+                                                        if(tamingExp >= 50172425) {
                                                             return true;
                                                         } else {
                                                             return false;
                                                         }
                                                     }
                                                     function isEnchanting25(enchantingExp) {
-                                                        if (enchantingExp >= 3000000) {
+                                                        if (enchantingExp >= 3022425) {
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    }
+                                                    function isEnchanting60(enchantingExp) {
+                                                        if(enchantingExp >= 111672425) {
                                                             return true;
                                                         } else {
                                                             return false;
                                                         }
                                                     }
                                                     function isFishing25(fishingExp) {
-                                                        if (fishingExp >= 3000000) {
+                                                        if (fishingExp >= 3022425) {
+                                                            return true;
+                                                        } else {
+                                                            return false;
+                                                        }
+                                                    }
+                                                    function isFishing50(fishingExp) {
+                                                        if(fishingExp >= 50172425) {
                                                             return true;
                                                         } else {
                                                             return false;
@@ -743,63 +799,104 @@ function role_cmd(msg, args) {
                                                         .setURL('https://sky.lea.moe/stats/' + args[0] + '/' + args[1])
                                                         .addFields(
                                                         { name: 'Skill Rollen', value: 'Fügt dir eine Skill Rolle hinzu, wenn du in diesem Skill Level 25 bist.' });
-                                                    if (isForaging25(foragingExp)) {
+                                                    if (isForaging25(foragingExp) && !isForaging50(foragingExp)) {
                                                         roleEmbed.addField('Foraging 25', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '727556162320597008'));
+                                                    } else if(isForaging50(foragingExp)) {
+                                                        roleEmbed.addField('Foraging 50', ':green_square:');
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556162320597008'));
+                                                        author.roles.add(msgGuild.roles.cache.find(role => role.id === '868817923538558976'));
                                                     } else {
                                                         roleEmbed.addField('Foraging 25', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556162320597008'));
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '868817923538558976'));
                                                     }
-                                                    if (isCombat25(combatExp)) {
+                                                    if (isCombat25(combatExp) && !isCombat60(combatExp)) {
                                                         roleEmbed.addField('Combat 25', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '727508450254258237'));
+                                                    } else if(isCombat60(combatExp)) {
+                                                        roleEmbed.addField('Combat 60', ':green_square:');
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727508450254258237'));
+                                                        author.roles.add(msgGuild.roles.cache.find(role => role.id === '867874058997989396'));
                                                     } else {
                                                         roleEmbed.addField('Combat 25', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727508450254258237'));
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '867874058997989396'));
                                                     }
-                                                    if (isMining25(miningExp)) {
+                                                    if (isMining25(miningExp) && !isMining60(miningExp)) {
                                                         roleEmbed.addField('Mining 25', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '727555564284149762'));
+                                                    } else if(isMining60(miningExp)) {
+                                                        roleEmbed.addField('Mining 60', ':green_square:');
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727555564284149762'));
+                                                        author.roles.add(msgGuild.roles.cache.find(role => role.id === '867869085203300403'));
                                                     } else {
                                                         roleEmbed.addField('Mining 25', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727555564284149762'));
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '867869085203300403'));
                                                     }
-                                                    if (isFarming25(farmingExp)) {
+                                                    if (isFarming25(farmingExp) && !isFarming60(farmingExp)) {
                                                         roleEmbed.addField('Farming 25', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '727556040887107584'));
+                                                    } else if(isFarming60(farmingExp)) {
+                                                        roleEmbed.addField('Farming 60', ':green_square:');
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556040887107584'));
+                                                        author.roles.add(msgGuild.roles.cache.find(role => role.id === '867872755432947753'));
                                                     } else {
                                                         roleEmbed.addField('Farming 25', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556040887107584'));
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '867872755432947753'));
                                                     }
-                                                    if (isAlchemy25(alchemyExp)) {
+                                                    if (isAlchemy25(alchemyExp) && !isAlchemy50(alchemyExp)) {
                                                         roleEmbed.addField('Alchemy 25', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '810135337648259072'));
+                                                    } else if(isAlchemy50(alchemyExp)) {
+                                                        roleEmbed.addField('Alchemy 50', ':green_square:');
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '810135337648259072'));
+                                                        author.roles.add(msgGuild.roles.cache.find(role => role.id === '868819467075981335'));
                                                     } else {
                                                         roleEmbed.addField('Alchemy 25', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '810135337648259072'));
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '868819467075981335'));
                                                     }
-                                                    if (isTaming25(tamingExp)) {
+                                                    if (isTaming25(tamingExp) && !isTaming50(tamingExp)) {
                                                         roleEmbed.addField('Taming 25', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '727556988543959040'));
+                                                    } else if(isTaming50(tamingExp)) {
+                                                        roleEmbed.addField('Taming 50', ':green_square:');
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556988543959040'));
+                                                        author.roles.add(msgGuild.roles.cache.find(role => role.id === '868820753573883904'));
                                                     } else {
                                                         roleEmbed.addField('Taming 25', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556988543959040'));
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '868820753573883904'));
                                                     }
-                                                    if (isEnchanting25(enchantingExp)) {
+                                                    if (isEnchanting25(enchantingExp) && !isEnchanting60(enchantingExp)) {
                                                         roleEmbed.addField('Enchanting 25', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '727556734490771486'));
+                                                    } else if(isEnchanting60(enchantingExp)) {
+                                                        roleEmbed.addField('Enchanting 60', ':green_square:');
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556734490771486'));
+                                                        author.roles.add(msgGuild.roles.cache.find(role => role.id === '867853537681604628'));
                                                     } else {
                                                         roleEmbed.addField('Enchanting 25', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556734490771486'));
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '867853537681604628'));
                                                     }
-                                                    if (isFishing25(fishingExp)) {
+                                                    if (isFishing25(fishingExp) && !isFishing50(fishingExp)) {
                                                         roleEmbed.addField('Fishing 25', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '727556252527230986'));
+                                                    } else if(isFishing50(fishingExp)) {
+                                                        roleEmbed.addField('Fishing 50', ':green_square:');
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556252527230986'));
+                                                        author.roles.add(msgGuild.roles.cache.find(role => role.id === '867868358359515156'));
                                                     } else {
                                                         roleEmbed.addField('Fishing 25', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '727556252527230986'));
+                                                        author.roles.remove(msgGuild.roles.cache.find(role => role.id === '867868358359515156'));
                                                     }
                                                     roleEmbed.addFields( { name: 'Slayer Rollen', value: 'Fügt dir eine Slayer Rolle hinzu, wenn du bei diesem Slayer Level 7 bist.' } );
+                                                    //868826384804483082
                                                     if (isRev7(slayer_exp_zombie)) {
                                                         roleEmbed.addField('Revenant Horror 7', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '734888340511260752'));
@@ -807,6 +904,7 @@ function role_cmd(msg, args) {
                                                         roleEmbed.addField('Revenant Horror 7', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '734888340511260752'));
                                                     }
+                                                    //868826508389662760
                                                     if (isTara7(slayer_exp_spider)) {
                                                         roleEmbed.addField('Tarantula Broodfather 7', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '734888342289907744'));
@@ -814,6 +912,7 @@ function role_cmd(msg, args) {
                                                         roleEmbed.addField('Tarantula Broodfather 7', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '734888342289907744'));
                                                     }
+                                                    //868826607392026634
                                                     if (isSven7(slayer_exp_wolf)) {
                                                         roleEmbed.addField('Sven Packmaster 7', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '734888338376622092'));
@@ -821,6 +920,7 @@ function role_cmd(msg, args) {
                                                         roleEmbed.addField('Sven Packmaster 7', ':red_square:');
                                                         author.roles.remove(msgGuild.roles.cache.find(role => role.id === '734888338376622092'));
                                                     }
+                                                    //868826757162221608
                                                     if (isEnderman3(slayer_exp_zombie)) {
                                                         roleEmbed.addField('Voidgloom Seraph 3', ':green_square:');
                                                         author.roles.add(msgGuild.roles.cache.find(role => role.id === '849369703063355422'));

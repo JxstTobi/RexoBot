@@ -10,6 +10,7 @@ const utilCommands = require('./UtilCommands')
 const teamCommands = require('./TeamCommands')
 const userCommands = require('./UserCommands')
 const utility = require('./Utility')
+const todo = JSON.parse(fs.readFileSync('todo.json', 'utf-8'));
 
 const connection = mysql.createConnection({
     host: config.host,
@@ -215,8 +216,12 @@ client.on('message', (msg) => {
             teamCommands.gscammers(msg, args)
             msg.delete()
         }
-        if(msg.content.startsWith("r!warn")) {
+        if(msg.content.startsWith("r!warn") && !msg.content.startsWith("r!warns")) {
             teamCommands.warns(msg, args, connection)
+            msg.delete()
+        }
+        if(msg.content.startsWith("r!warns")) {
+            teamCommands.checkwarns(msg, args, connection)
             msg.delete()
         }
         if(msg.content.startsWith("r!checkuser")) {
@@ -241,7 +246,6 @@ client.on('message', (msg) => {
         }
         if(msg.content.startsWith("r!roleclaim")) {
             userCommands.roleclaim(msg, args)
-            msg.delete()
         }
         if(msg.content.startsWith("r!dverify")) {
             userCommands.dverify(msg, args, connection, client)
@@ -252,8 +256,64 @@ client.on('message', (msg) => {
             msg.delete()
         }
         if(msg.content.startsWith("r!gstats")) {
-            msg.delete()
             userCommands.gstats(msg, args, connection)
+        }
+        if(msg.content.startsWith("r!todo") && !msg.content.startsWith("r!todoupdate")) {
+            if(msg.member.roles.cache.find(role => role.id =="734752809756524566")) {
+                if(todo[`${msg.member.id}`] != undefined) {
+                    if(Object.keys(todo[`${msg.member.id}`]).length > 0) {
+                        var embed = new Discord.MessageEmbed()
+                            .setTitle("Deine Aufgaben");
+                        for(var i = 0; i<Object.keys(todo[`${msg.member.id}`]).length; i++) {
+                            embed.addField(`Aufgabe ${i+1}`, todo[`${msg.member.id}`][`task_${i}`]["task"] + "\nZu erledigen bis: " + todo[`${msg.member.id}`][`task_${i}`]["deadline"])
+                        }
+                        msg.channel.send(embed)
+                    } else {
+                        msg.channel.send("Du hast keine Aufgaben.")
+                    }
+                } else {
+                    msg.channel.send("Du bist noch nicht als Developer registriert.")
+                }
+            } else {
+                msg.channel.send("Du bist kein Developer.")
+            }
+        }
+        if(msg.content.startsWith("r!todoupdate") && msg.member.id == 702790608649060432) {
+            msg.delete()
+            if(args.length == 1) {
+                if(utility.isNumeric(args[0])) {
+                    if(todo[`${args[0]}`] != undefined) {
+                        if(Object.keys(todo[`${msg.guild.members.cache.find(member => member.id == args[0]).id}`]).length > 0) {
+                            var embed = new Discord.MessageEmbed()
+                                .setTitle("Deine Aufgaben wurden geupdated");
+                            for(var i = 0; i<Object.keys(todo[`${msg.guild.members.cache.find(member => member.id == args[0]).id}`]).length; i++) {
+                                embed.addField(`Aufgabe ${i+1}`, todo[`${msg.guild.members.cache.find(member => member.id == args[0]).id}`][`task_${i}`])
+                            }
+                            msg.guild.members.cache.find(member => member.id == args[0]).send(embed)
+                        } else {
+                            msg.member.send(`Dieser Developer(${args[0]}) hat keine Aufgaben. Bitte gebe ihm Aufgaben und führe den Command erneut aus: r!todoupdate ${args[0]}`)
+                        }
+                    } else {
+                        msg.member.send(`Diese Person ist kein Developer: ${args[0]}`)
+                    }
+                } else {
+                    msg.member.send("Bitte gebe eine ID eines Developers an. (Keine ID angegeben)")
+                }
+            } else {
+                msg.member.send("Bitte gebe eine ID eines Developers an. (Kein Argument angegeben)")
+            }
+        }
+        if(msg.content.startsWith("r!createrole")) {
+            if(args.length === 3) {
+                msg.guild.roles.create({
+                    data: {
+                      name: args[0] + " " + args[1] + " " + args[2],
+                      color: 'GOLD',
+                    },
+                    reason: 'Neue Skill Rollen',
+                  })
+                    .then(console.log)
+            }
         }
         if(msg.content.starts)
         if (invoke in cmdmap) {

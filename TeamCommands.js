@@ -340,14 +340,14 @@ function gscammers_cmd(msg, args) {
 function  warns_cmd(msg, args, connection) {
     if(msg.member.roles.cache.some(role => role.id === '705790132833353739')) {
         if(args.length === 3) {
-            if(isNumeric(args[2])) {
+            if(utility.isNumeric(args[2])) {
                 if(args[2] < 10) {
                 var DiscordID = args[0];
                 var UUID = args[1];
                 var Reason = args[2];
                 var Creator = msg.member;
                 var WarnID = new Date().getTime();
-                if(isNumeric(args[0]) && args[1].length >= 32) {
+                if(utility.isNumeric(args[0]) && args[1].length >= 32) {
                     connection.query(`INSERT INTO Warns(DiscordID, UUID, Reason, WarnID, CreaterID) VALUES(${DiscordID}, "${UUID.split("-").join('')}", ${Reason}, ${WarnID}, ${Creator.id})`, function(err, res, field) {
                         if(err != null) {
                             console.log(err);
@@ -358,14 +358,14 @@ function  warns_cmd(msg, args, connection) {
                             console.log(err);
                         }
                     });
-                } else if(isNumeric(args[0]) && args[1].length <= 32) {
+                } else if(utility.isNumeric(args[0]) && args[1].length <= 32) {
                     connection.query(`INSERT INTO Warns(DiscordID, UUID, Reason, WarnID, CreaterID) VALUES(${DiscordID}, "-", ${Reason}, ${WarnID}, ${Creator.id})`, function(err, res, field) {
                         if(err != null) {
                             console.log(err);
                         }
                     });
                     msg.channel.send(`Die Person wurde gewarnt: **DiscordID:** ${DiscordID}, **UUID:** -, **Grund:** ${Reason}, **CreatorID:** ${Creator.id}, **WarnID:** ${WarnID}`);
-                } else if(!isNumeric(args[0]) && args[1].length >= 32) {
+                } else if(!utility.isNumeric(args[0]) && args[1].length >= 32) {
                     msg.channel.send(`Die Person wurde gewarnt: **DiscordID:** -, **UUID:** ${UUID.split("-").join('')}, **Grund:** ${Reason}, **CreatorID:** ${Creator.id}, **WarnID:** ${WarnID}`);
                     connection.query(`INSERT INTO Warns(DiscordID, UUID, Reason, WarnID, CreaterID) VALUES(0, "${UUID.split("-").join('')}", ${Reason}, ${WarnID}, ${Creator.id})`, function(err, res, field) {
                         if(err != null) {
@@ -381,21 +381,21 @@ function  warns_cmd(msg, args, connection) {
                 var Reason = args[2];
                 var Creator = msg.member;
                 var WarnID = new Date().getTime();
-                if(isNumeric(args[0]) && args[1].length >= 32) {
+                if(utility.isNumeric(args[0]) && args[1].length >= 32) {
                     connection.query(`INSERT INTO Warns(DiscordID, UUID, Reason, WarnID, CreaterID) VALUES(${DiscordID}, "${UUID.split("-").join('')}", ${Reason}, ${WarnID}, ${Creator.id})`, function(err, res, field) {
                         if(err != null) {
                             console.log(err);
                         }
                     });
                     msg.channel.send(`Die Person wurde gewarnt: **DiscordID:** ${DiscordID}, **UUID:** ${UUID.split("-").join('')}, **Grund:** ${Reason}, **CreatorID:** ${Creator.id}, **WarnID:** ${WarnID}`);
-                } else if(isNumeric(args[0]) && args[1].length <= 32) {
+                } else if(utility.isNumeric(args[0]) && args[1].length <= 32) {
                     connection.query(`INSERT INTO Warns(DiscordID, UUID, Reason, WarnID, CreaterID) VALUES(${DiscordID}, "-", ${Reason}, ${WarnID}, ${Creator.id})`, function(err, res, field) {
                         if(err != null) {
                             console.log(err);
                         }
                     });
                     msg.channel.send(`Die Person wurde gewarnt: **DiscordID:** ${DiscordID}, **UUID:** -, **Grund:** ${Reason}, **CreatorID:** ${Creator.id}, **WarnID:** ${WarnID}`);
-                } else if(!isNumeric(args[0]) && args[1].length >= 32) {
+                } else if(!utility.isNumeric(args[0]) && args[1].length >= 32) {
                     msg.channel.send(`Die Person wurde gewarnt: **DiscordID:** -, **UUID:** ${UUID.split("-").join('')}, **Grund:** ${Reason}, **CreatorID:** ${Creator.id}, **WarnID:** ${WarnID}`);
                     connection.query(`INSERT INTO Warns(DiscordID, UUID, Reason, WarnID, CreaterID) VALUES(0, "${UUID.split("-").join('')}", ${Reason}, ${WarnID}, ${Creator.id})`, function(err, res, field) {
                         if(err != null) {
@@ -426,7 +426,7 @@ function  warns_cmd(msg, args, connection) {
                 msg.channel.send('Gebe den Grund bitte als Zahl an. Die Gründe erhältst du wenn du **r!warn** ausführst, ohne Argumente anzugeben.');
             }
         } else if (args.length === 2 && args[0] === "delete") {
-            if(isNumeric(args[1])) {
+            if(utility.isNumeric(args[1])) {
                 connection.query(`SELECT Reason FROM Warns WHERE WarnID = "${args[1]}"`, function (err, result, fields) {
                     var string = JSON.stringify(result);
                     var json = JSON.parse(string);
